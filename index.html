@@ -14,22 +14,24 @@
             </tr>
         </thead>
         <tbody id="books-body">
-            <tr>
-                <td>Gregor the Overlander</td><td>Suzanne Collins</td><td>978-0345470123</td>
-            </tr>
-            <tr>
-                <td>Harry Potter</td><td>J.K. Rowling</td><td>978-0439708180</td>
-            </tr>
-            <tr>
-                <td>Throne of Glass</td><td>Sarah J. Maas</td><td>978-0062316110</td>
-            </tr>
-            <tr>
-                <td>Witch and Wizard</td><td>James Patterson</td><td>978-0439708180</td>
-            </tr>
-            <tr>
-                <td>The Familiar</td><td>Leigh Bardugo</td><td>978-0062316110</td>
-            </tr>
         </tbody>
     </table>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const supabaseUrl = 'https://jfwsbfnmapunougcrodw.supabase.co'
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impmd3NiZm5tYXB1bm91Z2Nyb2R3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1ODYxNjksImV4cCI6MjA4OTE2MjE2OX0.-6apgf_zYAU4BsLbHMFwhjUfBBV4VbzIOt5mMGMM8dQ'
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey)
+        async function loadBooks() {
+            const { data, error } = await supabaseClient.from('books').select('*')
+            const tbody = document.getElementById('books-body')
+            tbody.innerHTML = ''
+            data.forEach(book => {
+                const tr = document.createElement('tr')
+                tr.innerHTML = `<td>${book.title}</td><td>${book.author}</td><td>${book.isbn}</td>`
+                tbody.appendChild(tr)
+            })
+        }
+        loadBooks()
+    </script>
 </body>
 </html>
